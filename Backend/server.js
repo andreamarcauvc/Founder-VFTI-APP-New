@@ -1,16 +1,45 @@
+// Import dependencies
+const sqlite3 = require('sqlite3').verbose();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
+
 const app = express();
-const fs = require('fs');
-
-
 const port = process.env.PORT || 3000;
 
+// Connect to SQLite database (this will create founderData.db if it doesn't exist)
+const db = new sqlite3.Database('./founderData.db', (err) => {
+    if (err) {
+        console.error('Error opening database:', err);
+    } else {
+        console.log('Connected to SQLite database');
+
+        // Create the table if it doesn't exist
+        db.run(`
+            CREATE TABLE IF NOT EXISTS founderEntries (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                founderName TEXT,
+                startupName TEXT,
+                email TEXT,
+                founderType TEXT,
+                traitDescriptions TEXT,
+                suggestion TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        `, (err) => {
+            if (err) {
+                console.error('Error creating table:', err);
+            } else {
+                console.log('Table "founderEntries" is ready for use');
+            }
+        });
+    }
+});
+
 // Middleware to parse JSON bodies, serve static files, and handle CORS
-app.use(bodyParser.json()); // To parse JSON request bodies
-app.use(cors()); // Allow cross-origin requests from the front-end (Netlify)
+app.use(bodyParser.json());
+app.use(cors());
 
 // Serve the static files from the "Public" directory
 app.use(express.static(path.join(__dirname, "../Public")));
@@ -24,38 +53,21 @@ app.get("/", (req, res) => {
 app.post('/submit', (req, res) => {
     const { founderName, startupName, email, founderType, traitDescriptions, suggestion } = req.body;
 
-    // Create a new entry to save
-    const entry = {
-        founderName,
-        startupName,
-        email,
-        founderType,
-        traitDescriptions,
-        suggestion,
-        timestamp: new Date()
-    };
-
-    // Read existing data (or create a new empty file if it doesn't exist)
-    fs.readFile('data.json', 'utf8', (err, data) => {
-        if (err && err.code !== 'ENOENT') {
-            console.error('Error reading data file:', err);
-            return res.status(500).send({ result: 'error', error: 'Error reading data file' });
+    // Insert the form data into the SQLite database
+    const query = `
+        INSERT INTO founderEntries (founderName, startupName, email, founderType, traitDescriptions, suggestion)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `;
+    db.run(query, [founderName, startupName, email, founderType, traitDescriptions, suggestion], function (err) {
+        if (err) {
+            console.error('Error saving to SQLite database:', err);
+            res.status(500).send({ result: 'error', error: 'Error saving to database' });
+        } else {
+            res.json({ result: 'success', id: this.lastID });
         }
-
-        // Parse the data and add the new entry
-        const jsonData = data ? JSON.parse(data) : [];
-        jsonData.push(entry);
-
-        // Write back to the data file
-        fs.writeFile('data.json', JSON.stringify(jsonData, null, 2), (err) => {
-            if (err) {
-                console.error('Error writing data file:', err);
-                return res.status(500).send({ result: 'error', error: 'Error writing data file' });
-            }
-            res.send({ result: 'success' });
-        });
     });
 });
+
 // Start the server using the appropriate port
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
