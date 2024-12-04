@@ -1,0 +1,91 @@
+/* General styles for body */
+body {
+    font-family: 'Akzidenz-Grotesk BQ', Arial, sans-serif;
+    background-color: #151730; /* Dark background */
+    color: #151730; /* Dark blue text */
+    margin: 0;
+    padding: 0;
+}
+
+/* Container styling */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: left;
+    background: #ffffff; /* White background for the dialogue box */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #151730; /* Ensure text remains dark blue inside the container */
+}
+
+/* Logo styling */
+#logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 300px;
+    background-color: #ffffff; /* White background for better visibility */
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Heading styles */
+h1 {
+    font-weight: bold;
+    font-size: 24px;
+    color: #151730; /* Dark blue for the main title */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 22px;
+    color: #151730; /* Dark blue for subheadings */
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+button {
+    background-color: #d2c3ea; /* Light Violet */
+    color: #151730; /* Dark blue text */
+    padding: 12px 20px;
+    margin: 20px auto;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    display: block;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #ffffff; /* White on hover */
+    color: #151730; /* Dark text */
+}
+
+/* Question Section */
+#question {
+    font-size: 20px;
+    margin-bottom: 30px;
+    color: #151730; /* Dark blue text */
+    text-align: center;
+}
+
+/* Options for answers */
+#testSection button {
+    display: block;
+    width: 80%;
+    max-width: 300px;
+    margin: 10px auto;
+    padding: 15px;
+    font-size: 16px;
+    background-color: #d2c3ea; /* Light Violet */
+    color: #151730; /* Dark blue text */
+}
+
+/* Result Section */
+#resultSection {
+    padding-top: 20px;
+}

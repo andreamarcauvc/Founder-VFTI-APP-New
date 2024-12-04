@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venture Founder Type Indicator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- REALR Logo -->
+        <img id="logo" src="images/REALR-RGB-online-02.png" alt="REALR Logo">
+
+        <!-- Title -->
+        <h1>Venture Founder Type Indicator - What is your entrepreneurial style?</h1>
+
+        <!-- Questionnaire Section -->
+        <div id="questionnaire">
+            <p id="introduction">
+                This indicator consists of four dimensions:
+                <ol>
+                    <li>Visionary vs. Executor</li>
+                    <li>Adaptable vs. Consistent</li>
+                    <li>Independent vs. Collaborative</li>
+                    <li>Market-Centric vs. Product-Centric</li>
+                </ol>
+                For each dimension, you’ll find a description and five questions to help determine where your natural preferences lie.
+                <br><br>
+                Remember, there are no right or wrong answers—each trait brings valuable strengths to a venture.
+            </p>
+            <button id="startTest">Start the Test</button>
+        </div>
+
+        <!-- Email Collection Section -->
+        <div id="emailCollectionSection" style="display:none;">
+            <h2>Please provide your details before starting the test</h2>
+            <label for="founderName">Your Name:</label>
+            <input type="text" id="founderName" placeholder="Enter your name"><br><br>
+            <label for="startupName">Startup Name:</label>
+            <input type="text" id="startupName" placeholder="Enter your startup's name"><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email"><br><br>
+            <button id="submitEmail">Submit and Start Test</button>
+        </div>
+
+        <!-- Test Section -->
+        <div id="testSection" style="display:none;">
+            <div id="question"></div>
+            <button id="option1" onclick="chooseOption(1)"></button>
+            <button id="option2" onclick="chooseOption(2)"></button>
+        </div>
+
+        <!-- Result Section -->
+        <div id="resultSection" style="display:none;">
+            <h2>Your Founder Type is: <span id="founderType"></span></h2>
+            <div id="profileDescription"></div>
+        </div>
+    </div>
+
+    <!-- Include your custom script -->
+    <script src="script.js"></script>
+</body>
+</html>
