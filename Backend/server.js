@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const app = express();
+const fs = require('fs');
+
 
 const port = process.env.PORT || 3000;
 
@@ -19,23 +21,41 @@ app.get("/", (req, res) => {
 });
 
 // Endpoint to handle the form submission
-app.post("/submit", (req, res) => {
-    // Extract the data from the request body
+app.post('/submit', (req, res) => {
     const { founderName, startupName, email, founderType, traitDescriptions, suggestion } = req.body;
 
-    // Print the received data to the console
-    console.log("User Data Received:");
-    console.log(`Founder Name: ${founderName}`);
-    console.log(`Startup Name: ${startupName}`);
-    console.log(`Email: ${email}`);
-    console.log(`Founder Type: ${founderType}`);
-    console.log(`Trait Descriptions: ${traitDescriptions}`);
-    console.log(`Co-Founder Suggestions: ${suggestion}`);
+    // Create a new entry to save
+    const entry = {
+        founderName,
+        startupName,
+        email,
+        founderType,
+        traitDescriptions,
+        suggestion,
+        timestamp: new Date()
+    };
 
-    // Respond to the client with success
-    res.json({ result: "success" });
+    // Read existing data (or create a new empty file if it doesn't exist)
+    fs.readFile('data.json', 'utf8', (err, data) => {
+        if (err && err.code !== 'ENOENT') {
+            console.error('Error reading data file:', err);
+            return res.status(500).send({ result: 'error', error: 'Error reading data file' });
+        }
+
+        // Parse the data and add the new entry
+        const jsonData = data ? JSON.parse(data) : [];
+        jsonData.push(entry);
+
+        // Write back to the data file
+        fs.writeFile('data.json', JSON.stringify(jsonData, null, 2), (err) => {
+            if (err) {
+                console.error('Error writing data file:', err);
+                return res.status(500).send({ result: 'error', error: 'Error writing data file' });
+            }
+            res.send({ result: 'success' });
+        });
+    });
 });
-
 // Start the server using the appropriate port
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
