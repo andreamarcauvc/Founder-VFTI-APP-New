@@ -150,7 +150,7 @@ function submitTest() {
 
 // Updated function to send data to your backend server
 function sendToBackend(founderName, startupName, email, founderType, traitDescriptions, suggestion) {
-    const scriptURL = "http://localhost:10000/submit"; // URL to your backend
+    const scriptURL = "http://localhost:3000/submit"; // URL to your backend
 
     const payload = {
         founderName: founderName,
