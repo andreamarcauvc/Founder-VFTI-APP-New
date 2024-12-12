@@ -170,7 +170,7 @@ function submitTest() {
 
 // Updated function to send data to your backend server
 function sendToBackend(founderName, startupName, email, founderType, traitDescriptions, suggestion) {
-    const scriptURL = "http://localhost:10000/submit"; // URL to your backend
+    const scriptURL = "https://founder-vfti-app-new.onrender.com/submit"; // URL to your backend
 
     const payload = {
         founderName: founderName,
