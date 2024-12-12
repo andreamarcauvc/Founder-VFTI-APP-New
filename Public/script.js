@@ -89,29 +89,49 @@ let cofounder_suggestions = {
 };
 
 function shuffleQuestions() {
-    questions = questions.sort(() => Math.random() - 0.5);
+    // Divide le domande in gruppi di 5
+    let questionGroups = [
+        questions.slice(0, 5),
+        questions.slice(5, 10),
+        questions.slice(10, 15),
+        questions.slice(15)
+    ];
+
+    // Mescola internamente ciascun gruppo
+    questionGroups = questionGroups.map(group => 
+        group.sort(() => Math.random() - 0.5)
+    );
+
+    // Ricompone l'array delle domande
+    questions = [
+        ...questionGroups[0],
+        ...questionGroups[1],
+        ...questionGroups[2],
+        ...questionGroups[3]
+    ];
 }
 
 function shuffleAnswers(question) {
-    if (Math.random() > 0.5) {
-        [question.o1, question.o2] = [question.o2, question.o1];
-    }
+    let isSwapped = Math.random() > 0.5;
+    question.swapped = isSwapped; // Aggiungi una proprietà per tracciare lo scambio
 }
 
 function loadQuestion() {
     if (currentQuestion < questions.length) {
         let question = questions[currentQuestion];
         shuffleAnswers(question);
-        document.getElementById("question").innerText = question.q;
-        document.getElementById("option1").innerText = question.o1;
-        document.getElementById("option2").innerText = question.o2;
+        
+        // Imposta sempre gli ID corretti
+        document.getElementById("option1").innerText = question.swapped ? question.o2 : question.o1;
+        document.getElementById("option2").innerText = question.swapped ? question.o1 : question.o2;
     } else {
         submitTest();
     }
 }
 
 function chooseOption(option) {
-    responses.push(option === 1 ? '1' : '2');
+    let adjustedOption = questions[currentQuestion].swapped ? (option === 1 ? 2 : 1) : option;
+    responses.push(adjustedOption === 1 ? '1' : '2');
     currentQuestion++;
     loadQuestion();
 }
