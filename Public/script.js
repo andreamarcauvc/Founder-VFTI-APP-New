@@ -121,7 +121,7 @@ function loadQuestion() {
         let question = questions[currentQuestion];
         shuffleAnswers(question);
         
-        // Imposta sempre gli ID corretti
+        document.getElementById("question").innerText = question.q;
         document.getElementById("option1").innerText = question.swapped ? question.o2 : question.o1;
         document.getElementById("option2").innerText = question.swapped ? question.o1 : question.o2;
     } else {
