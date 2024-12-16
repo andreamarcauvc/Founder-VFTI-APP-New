@@ -65,6 +65,13 @@ button:hover {
     color: #151730; /* Dark text */
 }
 
+/* Selected Button */
+button.selected {
+    background-color: #a17cc8; /* Darker violet for selected */
+    color: #ffffff; /* White text for visibility */
+    font-weight: bold;
+}
+
 /* Progress Bar Container */
 #progressContainer {
     width: 100%;
