@@ -141,6 +141,7 @@ function submitTest() {
     const startupName = document.getElementById("startupName").value;
     const email = document.getElementById("email").value;
 
+    // Calculate scores for each dimension
     let visionary_score = responses.slice(0, 5).filter(r => r === '1').length;
     let executor_score = 5 - visionary_score;
     let adaptable_score = responses.slice(5, 10).filter(r => r === '1').length;
@@ -150,16 +151,20 @@ function submitTest() {
     let market_centric_score = responses.slice(15).filter(r => r === '1').length;
     let product_centric_score = 5 - market_centric_score;
 
-    let dominant_traits = [];
-    dominant_traits.push(visionary_score > executor_score ? 'V' : 'E');
-    dominant_traits.push(adaptable_score > consistent_score ? 'A' : 'C');
-    dominant_traits.push(independent_score > collaborative_score ? 'I' : 'C');
-    dominant_traits.push(market_centric_score > product_centric_score ? 'M' : 'P');
+    // Determine dominant traits without duplication
+    let dominant_traits = [
+        visionary_score > executor_score ? 'V' : 'E',
+        adaptable_score > consistent_score ? 'A' : 'C',
+        independent_score > collaborative_score ? 'I' : 'C2', // Use 'C2' to distinguish Collaboration
+        market_centric_score > product_centric_score ? 'M' : 'P'
+    ];
 
+    // Build descriptions and suggestions
     let founder_type = dominant_traits.join("");
     let trait_descriptions = dominant_traits.map(trait => dimension_descriptions[trait]).join("<br><br>");
     let suggestion = cofounder_suggestions[founder_type] || "Your profile is unique! Seek collaborators who complement your entrepreneurial style.";
 
+    // Display results
     document.getElementById("testSection").style.display = "none";
     document.getElementById("resultSection").style.display = "block";
     document.getElementById("founderType").innerHTML = founder_type;
@@ -167,7 +172,6 @@ function submitTest() {
 
     sendToBackend(founderName, startupName, email, founder_type, trait_descriptions, suggestion);
 }
-
 // Updated function to send data to your backend server
 function sendToBackend(founderName, startupName, email, founderType, traitDescriptions, suggestion) {
     const scriptURL = "https://founder-vfti-app-new.onrender.com/submit"; // URL to your backend
