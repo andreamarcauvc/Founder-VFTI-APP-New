@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Venture Founder Type Indicator</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../Founder-VFTI-APP/Public/styles.css">
 </head>
 <body>
     <div class="container">
         <!-- REALR Logo -->
-        <img id="logo" src="images/REALR-RGB-online-02.png" alt="REALR Logo">
+        <img id="logo" src="../../Founder-VFTI-APP/Public/images/REALR-RGB-online-02.png" alt="REALR Logo">
 
         <!-- Title -->
         <h1>Venture Founder Type Indicator - What is your entrepreneurial style?</h1>
@@ -45,9 +45,23 @@
 
         <!-- Test Section -->
         <div id="testSection" style="display:none;">
+            <!-- Progress Bar -->
+            <div id="progressContainer">
+                <div id="progressBar"></div>
+            </div>
+
+            <!-- Question -->
             <div id="question"></div>
+
+            <!-- Options -->
             <button id="option1" onclick="chooseOption(1)"></button>
             <button id="option2" onclick="chooseOption(2)"></button>
+
+            <!-- Navigation Buttons -->
+            <div id="navigationButtons">
+                <button id="backButton" onclick="goBack()" disabled>Back</button>
+                <button id="forwardButton" onclick="goForward()" disabled>Next</button>
+            </div>
         </div>
 
         <!-- Result Section -->
@@ -58,6 +72,6 @@
     </div>
 
     <!-- Include your custom script -->
-    <script src="script.js"></script>
+    <script src="../../Founder-VFTI-APP/Public/script.js"></script>
 </body>
 </html>
