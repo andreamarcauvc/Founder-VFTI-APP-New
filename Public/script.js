@@ -57,6 +57,11 @@ let questions = [
 let responses = [];
 let currentQuestion = 0;
 
+function updateProgressBar() {
+    const progress = ((currentQuestion + 1) / questions.length) * 100; // Calculate percentage
+    document.getElementById("progressBar").style.width = `${progress}%`; // Update width
+}
+
 let dimension_descriptions = {
     "V": "Visionary (V): You are driven by big ideas and future possibilities. You enjoy conceptualizing transformative concepts and are motivated by the potential impact of your venture. You thrive when exploring innovative solutions and setting ambitious goals.",
     "E": "Executor (E): You excel at turning ideas into reality through practical implementation. You are detail-oriented, focused on planning, organizing, and ensuring that tasks are completed efficiently. You find satisfaction in achieving tangible results and making consistent progress.",
@@ -87,6 +92,8 @@ let cofounder_suggestions = {
     "ECIP": "Partner with a commercially oriented strategist who expands market opportunities and customer alignment. Complement this with a creative technical expert and an adaptable collaborator who balances structure with innovation.",
     "ECCP": "Seek a visionary strategist who connects your product to future market demands. Add a dynamic technical innovator who creates unique solutions and a commercially focused collaborator who maximizes customer reach."
 };
+
+
 
 function shuffleQuestions() {
     // Divide le domande in gruppi di 5
@@ -120,20 +127,41 @@ function loadQuestion() {
     if (currentQuestion < questions.length) {
         let question = questions[currentQuestion];
         shuffleAnswers(question);
-        
+
         document.getElementById("question").innerText = question.q;
         document.getElementById("option1").innerText = question.swapped ? question.o2 : question.o1;
         document.getElementById("option2").innerText = question.swapped ? question.o1 : question.o2;
+
+        updateProgressBar(); // Update progress bar
+
+        // Enable or disable navigation buttons
+        document.getElementById("backButton").disabled = currentQuestion === 0;
+        document.getElementById("forwardButton").disabled = currentQuestion === questions.length - 1;
     } else {
         submitTest();
     }
 }
 
+
 function chooseOption(option) {
     let adjustedOption = questions[currentQuestion].swapped ? (option === 1 ? 2 : 1) : option;
-    responses.push(adjustedOption === 1 ? '1' : '2');
+    responses[currentQuestion] = adjustedOption === 1 ? '1' : '2'; // Overwrite response for current question
     currentQuestion++;
     loadQuestion();
+}
+
+function goBack() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+    }
+}
+
+function goForward() {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+    }
 }
 
 function submitTest() {
@@ -141,7 +169,6 @@ function submitTest() {
     const startupName = document.getElementById("startupName").value;
     const email = document.getElementById("email").value;
 
-    // Calculate scores for each dimension
     let visionary_score = responses.slice(0, 5).filter(r => r === '1').length;
     let executor_score = 5 - visionary_score;
     let adaptable_score = responses.slice(5, 10).filter(r => r === '1').length;
@@ -151,20 +178,16 @@ function submitTest() {
     let market_centric_score = responses.slice(15).filter(r => r === '1').length;
     let product_centric_score = 5 - market_centric_score;
 
-    // Determine dominant traits without duplication
-    let dominant_traits = [
-        visionary_score > executor_score ? 'V' : 'E',
-        adaptable_score > consistent_score ? 'A' : 'C',
-        independent_score > collaborative_score ? 'I' : 'C2', // Use 'C2' to distinguish Collaboration
-        market_centric_score > product_centric_score ? 'M' : 'P'
-    ];
+    let dominant_traits = [];
+    dominant_traits.push(visionary_score > executor_score ? 'V' : 'E');
+    dominant_traits.push(adaptable_score > consistent_score ? 'A' : 'C');
+    dominant_traits.push(independent_score > collaborative_score ? 'I' : 'C');
+    dominant_traits.push(market_centric_score > product_centric_score ? 'M' : 'P');
 
-    // Build descriptions and suggestions
     let founder_type = dominant_traits.join("");
     let trait_descriptions = dominant_traits.map(trait => dimension_descriptions[trait]).join("<br><br>");
     let suggestion = cofounder_suggestions[founder_type] || "Your profile is unique! Seek collaborators who complement your entrepreneurial style.";
 
-    // Display results
     document.getElementById("testSection").style.display = "none";
     document.getElementById("resultSection").style.display = "block";
     document.getElementById("founderType").innerHTML = founder_type;
@@ -172,6 +195,7 @@ function submitTest() {
 
     sendToBackend(founderName, startupName, email, founder_type, trait_descriptions, suggestion);
 }
+
 // Updated function to send data to your backend server
 function sendToBackend(founderName, startupName, email, founderType, traitDescriptions, suggestion) {
     const scriptURL = "https://founder-vfti-app-new.onrender.com/submit"; // URL to your backend
