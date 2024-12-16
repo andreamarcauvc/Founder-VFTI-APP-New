@@ -233,18 +233,20 @@ function submitTest() {
     const dominant_traits = [
         scores.VE > 2 ? 'V' : 'E',
         scores.AC > 2 ? 'A' : 'C',
-        scores.IC > 2 ? 'I' : 'C2',
+        scores.IC > 2 ? 'I' : 'C2', // "C2" here
         scores.MP > 2 ? 'M' : 'P'
     ];
 
     const founder_type = dominant_traits.join("");
+    const clean_founder_type = founder_type.replace("C2", "C"); // Replace "C2" with "C" for suggestions
+
     const trait_descriptions = dominant_traits.map(trait => dimension_descriptions[trait]).join("<br><br>");
-    const suggestion = cofounder_suggestions[founder_type] || "Your profile is unique!";
+    const suggestion = cofounder_suggestions[clean_founder_type] || "Your profile is unique! Seek collaborators who complement your entrepreneurial style.";
 
     // Display results
     document.getElementById("testSection").style.display = "none";
     document.getElementById("resultSection").style.display = "block";
-    document.getElementById("founderType").innerHTML = founder_type;
+    document.getElementById("founderType").innerHTML = clean_founder_type; // Original founder_type displayed
     document.getElementById("profileDescription").innerHTML = `
         <h3>Profile Description:</h3>${trait_descriptions}<br><br>
         <h3>Co-Founder Suggestions:</h3>${suggestion}`;
