@@ -32,30 +32,36 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 let questions = [
-    { q: "When starting a new project, what aspect energizes you the most?", o1: "Envisioning the long-term impact and innovative possibilities.", o2: "Laying out a detailed plan to execute the project effectively." },
-    { q: "How do you approach problem-solving?", o1: "Thinking broadly about various concepts and potential groundbreaking solutions.", o2: "Analyzing specifics and developing step-by-step solutions." },
-    { q: "In team discussions, you prefer to:", o1: "Inspire others with big-picture ideas.", o2: "Focus on actionable items." },
-    { q: "What motivates you during challenging times?", o1: "The possibility of making a significant change.", o2: "Satisfaction in achieving progress." },
-    { q: "When evaluating success, you prioritize:", o1: "The extent to which your vision has transformed the industry.", o2: "The efficiency of execution." },
-    { q: "When your venture faces unexpected challenges, your approach is to:", o1: "Embrace flexibility and adjust strategies.", o2: "Demonstrate tenacity by staying the course." },
-    { q: "In planning your startup’s growth, you prefer to:", o1: "Keep plans fluid, adapting quickly.", o2: "Maintain strategic focus on long-term goals." },
-    { q: "When considering potential pivots or changes in direction, you:", o1: "Readily pivot if it aligns with market needs.", o2: "Carefully evaluate and prioritize consistency." },
-    { q: "How do you manage your team’s efforts when new trends emerge?", o1: "Encourage the team to integrate new ideas.", o2: "Keep the team focused on objectives." },
-    { q: "Your leadership style is best described as:", o1: "Flexible and responsive.", o2: "Steadfast and reliable." },
-    { q: "When tackling complex problems, your strength lies in:", o1: "Independently dive into complex problems.", o2: "Collaborate to leverage a variety of insights." },
-    { q: "In terms of work style, you would describe yourself as:", o1: "Self-starter who refines concepts on your own.", o2: "Brainstorm and build ideas with a team." },
-    { q: "When approaching new tasks, you tend to:", o1: "Take initiative independently.", o2: "Involve team members." },
-    { q: "In decision-making, you rely more on:", o1: "Make decisions independently.", o2: "Value collective input." },
-    { q: "How do you prefer to communicate progress?", o1: "Communicate through detailed reports.", o2: "Regular meetings to keep everyone aligned." },
-    { q: "What primarily drives your product development decisions?", o1: "Driven by customer feedback and market demands.", o2: "Pursue technical excellence and product features." },
-    { q: "When considering a new feature or improvement, you:", o1: "Focus on meeting customer needs.", o2: "Enhance core functionality." },
-    { q: "How do you handle early product feedback?", o1: "Adapt offerings to align with expectations.", o2: "Stay true to product vision." },
-    { q: "When analyzing competitors, you focus on:", o1: "Analyze competitors' positioning.", o2: "Assess product features and design." },
-    { q: "You gauge success primarily by:", o1: "Gauge success by market adoption.", o2: "Gauge success by product quality." }
+    { q: "When starting a new project, what aspect energizes you the most?", o1: "Envisioning the long-term impact and innovative possibilities.", o2: "Laying out a detailed plan to execute the project effectively.", category: "VE" },
+    { q: "How do you approach problem-solving?", o1: "Thinking broadly about various concepts and potential groundbreaking solutions.", o2: "Analyzing specifics and developing step-by-step solutions.", category: "VE" },
+    { q: "What motivates you during challenging times?", o1: "The possibility of making a significant change.", o2: "Satisfaction in achieving progress.", category: "VE" },
+    { q: "In team discussions, you prefer to:", o1: "Inspire others with big-picture ideas.", o2: "Focus on actionable items.", category: "VE" },
+    { q: "When evaluating success, you prioritize:", o1: "The extent to which your vision has transformed the industry.", o2: "The efficiency of execution.", category: "VE" },
+    
+    { q: "When your venture faces unexpected challenges, your approach is to:", o1: "Embrace flexibility and adjust strategies.", o2: "Demonstrate tenacity by staying the course.", category: "AC" },
+    { q: "In planning your startup’s growth, you prefer to:", o1: "Keep plans fluid, adapting quickly.", o2: "Maintain strategic focus on long-term goals.", category: "AC" },
+    { q: "When considering potential pivots or changes in direction, you:", o1: "Readily pivot if it aligns with market needs.", o2: "Carefully evaluate and prioritize consistency.", category: "AC" },
+    { q: "How do you manage your team’s efforts when new trends emerge?", o1: "Encourage the team to integrate new ideas.", o2: "Keep the team focused on objectives.", category: "AC" },
+    { q: "Your leadership style is best described as:", o1: "Flexible and responsive.", o2: "Steadfast and reliable.", category: "AC" },
+
+    { q: "When tackling complex problems, your strength lies in:", o1: "Independently dive into complex problems.", o2: "Collaborate to leverage a variety of insights.", category: "IC" },
+    { q: "In terms of work style, you would describe yourself as:", o1: "Self-starter who refines concepts on your own.", o2: "Brainstorm and build ideas with a team.", category: "IC" },
+    { q: "When approaching new tasks, you tend to:", o1: "Take initiative independently.", o2: "Involve team members.", category: "IC" },
+    { q: "In decision-making, you rely more on:", o1: "Make decisions independently.", o2: "Value collective input.", category: "IC" },
+    { q: "How do you prefer to communicate progress?", o1: "Communicate through detailed reports.", o2: "Regular meetings to keep everyone aligned.", category: "IC" },
+
+    { q: "What primarily drives your product development decisions?", o1: "Driven by customer feedback and market demands.", o2: "Pursue technical excellence and product features.", category: "MP" },
+    { q: "When considering a new feature or improvement, you:", o1: "Focus on meeting customer needs.", o2: "Enhance core functionality.", category: "MP" },
+    { q: "How do you handle early product feedback?", o1: "Adapt offerings to align with expectations.", o2: "Stay true to product vision.", category: "MP" },
+    { q: "When analyzing competitors, you focus on:", o1: "Analyze competitors' positioning.", o2: "Assess product features and design.", category: "MP" },
+    { q: "You gauge success primarily by:", o1: "Gauge success by market adoption.", o2: "Gauge success by product quality.", category: "MP" }
 ];
+
 
 let responses = [];
 let currentQuestion = 0;
+
+
 
 function updateProgressBar() {
     const progress = ((currentQuestion + 1) / questions.length) * 100; // Calculate percentage
@@ -126,28 +132,81 @@ function shuffleAnswers(question) {
 function loadQuestion() {
     if (currentQuestion < questions.length) {
         let question = questions[currentQuestion];
-        shuffleAnswers(question);
 
+        // Shuffle answers only once
+        if (question.swapped === undefined) {
+            shuffleAnswers(question);
+        }
+
+        // Display question and shuffled answers
         document.getElementById("question").innerText = question.q;
         document.getElementById("option1").innerText = question.swapped ? question.o2 : question.o1;
         document.getElementById("option2").innerText = question.swapped ? question.o1 : question.o2;
 
-        updateProgressBar(); // Update progress bar
+        updateProgressBar();
+        highlightSelectedOption(); // Highlight the saved option
 
-        // Enable or disable navigation buttons
+        // Manage navigation buttons
         document.getElementById("backButton").disabled = currentQuestion === 0;
-        document.getElementById("forwardButton").disabled = currentQuestion === questions.length - 1;
+        document.getElementById("forwardButton").disabled = !responses[currentQuestion];
     } else {
         submitTest();
     }
 }
 
 
+
 function chooseOption(option) {
-    let adjustedOption = questions[currentQuestion].swapped ? (option === 1 ? 2 : 1) : option;
-    responses[currentQuestion] = adjustedOption === 1 ? '1' : '2'; // Overwrite response for current question
-    currentQuestion++;
-    loadQuestion();
+    const question = questions[currentQuestion];
+
+    // Determine the corrected option based on swap state
+    const value = question.swapped
+        ? (option === 1 ? 2 : 1) // Reverse option if answers are swapped
+        : option;
+
+    // Save the response as an object with category and value
+    responses[currentQuestion] = { category: question.category, value };
+
+    // Update highlight immediately
+    highlightSelectedOption();
+
+    // Automatically move to the next question
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+    } else {
+        submitTest();
+    }
+}
+
+
+
+function highlightSelectedOption() {
+    const question = questions[currentQuestion];
+    const savedResponse = responses[currentQuestion];
+
+    // Reset highlights
+    document.getElementById("option1").classList.remove("selected");
+    document.getElementById("option2").classList.remove("selected");
+
+    // Check the saved response value and highlight the correct button
+    if (savedResponse && savedResponse.value === (question.swapped ? 2 : 1)) {
+        document.getElementById("option1").classList.add("selected");
+    } else if (savedResponse && savedResponse.value === (question.swapped ? 1 : 2)) {
+        document.getElementById("option2").classList.add("selected");
+    }
+}
+
+
+
+
+function goForward() {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+    } else {
+        submitTest();
+    }
 }
 
 function goBack() {
@@ -157,44 +216,41 @@ function goBack() {
     }
 }
 
-function goForward() {
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        loadQuestion();
-    }
-}
+
+
 
 function submitTest() {
-    const founderName = document.getElementById("founderName").value;
-    const startupName = document.getElementById("startupName").value;
-    const email = document.getElementById("email").value;
+    const scores = { VE: 0, AC: 0, IC: 0, MP: 0 };
 
-    let visionary_score = responses.slice(0, 5).filter(r => r === '1').length;
-    let executor_score = 5 - visionary_score;
-    let adaptable_score = responses.slice(5, 10).filter(r => r === '1').length;
-    let consistent_score = 5 - adaptable_score;
-    let independent_score = responses.slice(10, 15).filter(r => r === '1').length;
-    let collaborative_score = 5 - independent_score;
-    let market_centric_score = responses.slice(15).filter(r => r === '1').length;
-    let product_centric_score = 5 - market_centric_score;
+    // Group responses and compute scores
+    responses.forEach(response => {
+        if (response.value === 1) { 
+            scores[response.category]++; // Option 1 corresponds to one side
+        }
+    });
 
-    let dominant_traits = [];
-    dominant_traits.push(visionary_score > executor_score ? 'V' : 'E');
-    dominant_traits.push(adaptable_score > consistent_score ? 'A' : 'C');
-    dominant_traits.push(independent_score > collaborative_score ? 'I' : 'C');
-    dominant_traits.push(market_centric_score > product_centric_score ? 'M' : 'P');
+    // Determine dominant traits based on scores
+    const dominant_traits = [
+        scores.VE > 2 ? 'V' : 'E',
+        scores.AC > 2 ? 'A' : 'C',
+        scores.IC > 2 ? 'I' : 'C2',
+        scores.MP > 2 ? 'M' : 'P'
+    ];
 
-    let founder_type = dominant_traits.join("");
-    let trait_descriptions = dominant_traits.map(trait => dimension_descriptions[trait]).join("<br><br>");
-    let suggestion = cofounder_suggestions[founder_type] || "Your profile is unique! Seek collaborators who complement your entrepreneurial style.";
+    const founder_type = dominant_traits.join("");
+    const trait_descriptions = dominant_traits.map(trait => dimension_descriptions[trait]).join("<br><br>");
+    const suggestion = cofounder_suggestions[founder_type] || "Your profile is unique!";
 
+    // Display results
     document.getElementById("testSection").style.display = "none";
     document.getElementById("resultSection").style.display = "block";
     document.getElementById("founderType").innerHTML = founder_type;
-    document.getElementById("profileDescription").innerHTML = `<h3>Profile Description:</h3>${trait_descriptions}<br><br><h3>Co-Founder Suggestions:</h3>${suggestion}`;
-
-    sendToBackend(founderName, startupName, email, founder_type, trait_descriptions, suggestion);
+    document.getElementById("profileDescription").innerHTML = `
+        <h3>Profile Description:</h3>${trait_descriptions}<br><br>
+        <h3>Co-Founder Suggestions:</h3>${suggestion}`;
 }
+
+
 
 // Updated function to send data to your backend server
 function sendToBackend(founderName, startupName, email, founderType, traitDescriptions, suggestion) {
