@@ -219,6 +219,7 @@ function goBack() {
 
 
 
+// Update the submitTest function to actually call sendToBackend
 function submitTest() {
     const scores = { VE: 0, AC: 0, IC: 0, MP: 0 };
 
@@ -250,11 +251,18 @@ function submitTest() {
     document.getElementById("profileDescription").innerHTML = `
         <h3>Profile Description:</h3>${trait_descriptions}<br><br>
         <h3>Co-Founder Suggestions:</h3>${suggestion}`;
+    
+    // Get user information
+    const founderName = document.getElementById("founderName").value;
+    const startupName = document.getElementById("startupName").value;
+    const email = document.getElementById("email").value;
+    
+    // IMPORTANT: Actually call the sendToBackend function
+    console.log("Sending data to backend:", founderName, startupName, email, clean_founder_type);
+    sendToBackend(founderName, startupName, email, clean_founder_type, trait_descriptions, suggestion);
 }
 
-
-
-// Updated function to send data to your backend server
+// Updated function to send data to your backend server with better error handling
 function sendToBackend(founderName, startupName, email, founderType, traitDescriptions, suggestion) {
     const scriptURL = "/submit"; // URL to your backend
 
@@ -267,6 +275,8 @@ function sendToBackend(founderName, startupName, email, founderType, traitDescri
         suggestion: suggestion
     };
 
+    console.log("Sending payload to server:", payload);
+
     fetch(scriptURL, {
         method: "POST",
         headers: {
@@ -274,15 +284,23 @@ function sendToBackend(founderName, startupName, email, founderType, traitDescri
         },
         body: JSON.stringify(payload)
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log("Response status:", response.status);
+        return response.json();
+    })
     .then(result => {
+        console.log("Server response:", result);
         if (result.result === "success") {
             console.log("Data logged successfully:", result);
+            // Maybe show success message to user
+            alert("Your results have been saved successfully!");
         } else {
             console.error("Error logging data:", result.error);
+            alert("There was an issue saving your results. Please try again.");
         }
     })
     .catch(error => {
         console.error("Error sending data:", error);
+        alert("Connection error. Please check your internet connection and try again.");
     });
 }
