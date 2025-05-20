@@ -1,7 +1,7 @@
 // Import dependencies
 // const sqlite3 = require('sqlite3').verbose();
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://andrea:$chiffb%40u10@founderappvfti.l3c3o.mongodb.net/?retryWrites=true&w=majority&appName=FounderAppVFTI";
+const uri = "mongodb+srv://andrea:%24chiffb%40u10chiffb%40u10@founderappvfti.l3c3o.mongodb.net/?retryWrites=true&w=majority&appName=FounderAppVFTI";
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
