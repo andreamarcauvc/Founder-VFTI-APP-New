@@ -10,7 +10,7 @@ if (startTestButton) {
             questionnaire.style.display = "none";
             emailCollectionSection.style.display = "block";
         });
-
+}
 
 if (submitEmailButton) {
         submitEmailButton.addEventListener("click", function () {
