@@ -6,14 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const emailCollectionSection = document.getElementById("emailCollectionSection");
     const submitEmailButton = document.getElementById("submitEmail");
 
-    if (startTestButton) {
-        startTestButton.addEventListener("click", function () {
-            questionnaire.style.display = "none";
-            emailCollectionSection.style.display = "block";
-        });
-    }
-
-    if (submitEmailButton) {
+if (submitEmailButton) {
         submitEmailButton.addEventListener("click", function () {
             const founderName = document.getElementById("founderName").value;
             const startupName = document.getElementById("startupName").value;
@@ -249,7 +242,11 @@ function submitTest() {
     document.getElementById("founderType").innerHTML = founder_type;
     document.getElementById("profileDescription").innerHTML = `<h3>Profile Description:</h3>${trait_descriptions}<br><br><h3>Co-Founder Suggestions:</h3>${suggestion}`;
 
-    sendToBackend(founderName, startupName, email, founder_type, trait_descriptions, suggestion);
+    const founderName = document.getElementById("founderName").value;
+    const startupName = document.getElementById("startupName").value;
+    const email = document.getElementById("email").value;
+    sendToBackend(founderName, startupName, email, clean_founder_type, trait_descriptions, suggestion);
+
 }
 
 // Updated function to send data to your backend server
