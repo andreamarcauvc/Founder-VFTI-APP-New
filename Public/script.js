@@ -244,27 +244,17 @@ function submitTest() {
     const trait_descriptions = dominant_traits.map(trait => dimension_descriptions[trait]).join("<br><br>");
     const suggestion = cofounder_suggestions[clean_founder_type] || "Your profile is unique! Seek collaborators who complement your entrepreneurial style.";
 
-    // Display results
     document.getElementById("testSection").style.display = "none";
     document.getElementById("resultSection").style.display = "block";
-    document.getElementById("founderType").innerHTML = clean_founder_type; // Original founder_type displayed
-    document.getElementById("profileDescription").innerHTML = `
-        <h3>Profile Description:</h3>${trait_descriptions}<br><br>
-        <h3>Co-Founder Suggestions:</h3>${suggestion}`;
-    
-    // Get user information
-    const founderName = document.getElementById("founderName").value;
-    const startupName = document.getElementById("startupName").value;
-    const email = document.getElementById("email").value;
-    
-    // IMPORTANT: Actually call the sendToBackend function
-    console.log("Sending data to backend:", founderName, startupName, email, clean_founder_type);
-    sendToBackend(founderName, startupName, email, clean_founder_type, trait_descriptions, suggestion);
+    document.getElementById("founderType").innerHTML = founder_type;
+    document.getElementById("profileDescription").innerHTML = `<h3>Profile Description:</h3>${trait_descriptions}<br><br><h3>Co-Founder Suggestions:</h3>${suggestion}`;
+
+    sendToBackend(founderName, startupName, email, founder_type, trait_descriptions, suggestion);
 }
 
-// Updated function to send data to your backend server with better error handling
+// Updated function to send data to your backend server
 function sendToBackend(founderName, startupName, email, founderType, traitDescriptions, suggestion) {
-    const scriptURL = "/submit"; // URL to your backend
+    const scriptURL = "https://founder-vfti-app-new.onrender.com/submit"; // URL to your backend
 
     const payload = {
         founderName: founderName,
@@ -275,8 +265,6 @@ function sendToBackend(founderName, startupName, email, founderType, traitDescri
         suggestion: suggestion
     };
 
-    console.log("Sending payload to server:", payload);
-
     fetch(scriptURL, {
         method: "POST",
         headers: {
@@ -284,23 +272,15 @@ function sendToBackend(founderName, startupName, email, founderType, traitDescri
         },
         body: JSON.stringify(payload)
     })
-    .then(response => {
-        console.log("Response status:", response.status);
-        return response.json();
-    })
+    .then(response => response.json())
     .then(result => {
-        console.log("Server response:", result);
         if (result.result === "success") {
             console.log("Data logged successfully:", result);
-            // Maybe show success message to user
-            alert("Your results have been saved successfully!");
         } else {
             console.error("Error logging data:", result.error);
-            alert("There was an issue saving your results. Please try again.");
         }
     })
     .catch(error => {
         console.error("Error sending data:", error);
-        alert("Connection error. Please check your internet connection and try again.");
     });
 }
