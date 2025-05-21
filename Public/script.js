@@ -5,6 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultSection = document.getElementById("resultSection");
     const emailCollectionSection = document.getElementById("emailCollectionSection");
     const submitEmailButton = document.getElementById("submitEmail");
+if (startTestButton) {
+        startTestButton.addEventListener("click", function () {
+            questionnaire.style.display = "none";
+            emailCollectionSection.style.display = "block";
+        });
+
 
 if (submitEmailButton) {
         submitEmailButton.addEventListener("click", function () {
