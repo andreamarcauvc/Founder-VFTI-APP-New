@@ -285,13 +285,13 @@ function sendToBackend(founderName, startupName, email, founderType, traitDescri
 
     // Send email via EmailJS
     emailjs.send("service_dgfn4xo", "template_vr4k7cd", {
-        founderName: founderName,
-        startupName: startupName,
-        email: email,
-        founderType: founderType,
-        traitDescriptions: traitDescriptions,
-        suggestion: suggestion
-    })
+    founderName,
+    startupName,
+    email,
+    founderType,
+    traitDescriptions,
+    suggestion
+}, "RWSvKvvL3y3M4kRhL")
     .then(function(response) {
         console.log("Email successfully sent!", response.status, response.text);
     }, function(error) {
