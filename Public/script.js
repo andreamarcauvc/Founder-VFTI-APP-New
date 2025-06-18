@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-
+emailjs.init("RWSvKvvL3y3M4kRhL");
 let questions = [
     { q: "When starting a new project, what aspect energizes you the most?", o1: "Envisioning the long-term impact and innovative possibilities.", o2: "Laying out a detailed plan to execute the project effectively.", category: "VE" },
     { q: "How do you approach problem-solving?", o1: "Thinking broadly about various concepts and potential groundbreaking solutions.", o2: "Analyzing specifics and developing step-by-step solutions.", category: "VE" },
@@ -279,8 +279,23 @@ function sendToBackend(founderName, startupName, email, founderType, traitDescri
     .then(response => response.json())
     .then(result => {
         if (result.result === "success") {
-            console.log("Data logged successfully:", result);
-        } else {
+    console.log("Data logged successfully:", result);
+
+    // Send email via EmailJS
+    emailjs.send("service_dgfn4xo", "template_vr4k7cd", {
+        founderName: founderName,
+        startupName: startupName,
+        email: email,
+        founderType: founderType,
+        traitDescriptions: traitDescriptions,
+        suggestion: suggestion
+    })
+    .then(function(response) {
+        console.log("Email successfully sent!", response.status, response.text);
+    }, function(error) {
+        console.error("Email failed to send:", error);
+    });
+} else {
             console.error("Error logging data:", result.error);
         }
     })
