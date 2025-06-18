@@ -1,4 +1,7 @@
+emailjs.init("RWSvKvvL3y3M4kRhL");
 document.addEventListener("DOMContentLoaded", function () {
+
+
     const startTestButton = document.getElementById("startTest");
     const testSection = document.getElementById("testSection");
     const questionnaire = document.getElementById("questionnaire");
@@ -30,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-emailjs.init("RWSvKvvL3y3M4kRhL");
+
 let questions = [
     { q: "When starting a new project, what aspect energizes you the most?", o1: "Envisioning the long-term impact and innovative possibilities.", o2: "Laying out a detailed plan to execute the project effectively.", category: "VE" },
     { q: "How do you approach problem-solving?", o1: "Thinking broadly about various concepts and potential groundbreaking solutions.", o2: "Analyzing specifics and developing step-by-step solutions.", category: "VE" },
