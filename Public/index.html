@@ -65,4 +65,19 @@
         <!-- Result Section -->
         <div id="resultSection" style="display:none;">
             <h2>Your Founder Type is: <span id="founderType"></span></h2>
-            <div id="profileDescription">
+            <div id="profileDescription"></div>
+        </div>
+    </div>
+
+    <!-- Load EmailJS SDK (non-module) -->
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            emailjs.init("RWSvKvvL3y3M4kRhL");
+        });
+    </script>
+
+    <!-- Load your custom script (logic for quiz and email sending) -->
+    <script src="script.js"></script>
+</body>
+</html>
