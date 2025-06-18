@@ -1,7 +1,6 @@
-emailjs.init("RWSvKvvL3y3M4kRhL");
 document.addEventListener("DOMContentLoaded", function () {
 
-
+    emailjs.init("RWSvKvvL3y3M4kRhL");
     const startTestButton = document.getElementById("startTest");
     const testSection = document.getElementById("testSection");
     const questionnaire = document.getElementById("questionnaire");
